@@ -172,16 +172,7 @@ export default function Dashboard() {
 
         </section>
 
-        {/* INCIDENT TIMELINE */}
-        <section className="h-[320px]">
-
-          <DashboardPanel title="Incident Timeline">
-
-            <IncidentTimeline />
-
-          </DashboardPanel>
-
-        </section>
+        
 
         {/* BOTTOM GRID */}
         <section className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:min-h-[400px]">
@@ -232,16 +223,25 @@ export default function Dashboard() {
 
         </section>
 
-        {/* LOGS */}
-        <section className="h-[250px]">
+        {/* LOGS + TIMELINE */}
 
-          <DashboardPanel title="Live Activity Logs">
+<section className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[320px]">
 
-            <LiveLogs />
+  {/* LOGS */}
+  <DashboardPanel title="Live Activity Logs">
 
-          </DashboardPanel>
+    <LiveLogs />
 
-        </section>
+  </DashboardPanel>
+
+  {/* TIMELINE */}
+  <DashboardPanel title="Incident Timeline">
+
+    <IncidentTimeline />
+
+  </DashboardPanel>
+
+</section>
 
       </main>
 
