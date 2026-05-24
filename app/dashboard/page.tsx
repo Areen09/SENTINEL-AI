@@ -18,6 +18,7 @@ import TelemetryCharts from "@/components/TelemetryCharts";
 import LiveLogs from "@/components/LiveLogs";
 import AutonomousActions from "@/components/AutonomousActions";
 import PredictionEngine from "@/components/PredictionEngine";
+import IncidentTimeline from "@/components/IncidentTimeline";
 
 export default function Dashboard() {
 
@@ -166,6 +167,17 @@ export default function Dashboard() {
           <DashboardPanel title="Global Map">
 
             <GlobalMap />
+
+          </DashboardPanel>
+
+        </section>
+
+        {/* INCIDENT TIMELINE */}
+        <section className="h-[320px]">
+
+          <DashboardPanel title="Incident Timeline">
+
+            <IncidentTimeline />
 
           </DashboardPanel>
 
