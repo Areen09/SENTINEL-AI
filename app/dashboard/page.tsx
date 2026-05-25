@@ -1,7 +1,7 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
-
 import {
   Cpu,
   ShieldAlert,
@@ -21,7 +21,6 @@ import PredictionEngine from "@/components/PredictionEngine";
 import IncidentTimeline from "@/components/IncidentTimeline";
 
 export default function Dashboard() {
-
   const [mounted, setMounted] = useState(false);
 
   const [cpu, setCpu] = useState(84);
@@ -29,303 +28,243 @@ export default function Dashboard() {
   const [confidence, setConfidence] = useState(96);
 
   useEffect(() => {
-
     setMounted(true);
 
     const interval = setInterval(() => {
+      const isSpike = Math.random() > 0.85;
 
       setCpu((prev) =>
-        Math.min(100, Math.max(20, prev + (Math.random() * 10 - 5)))
+        Math.min(100, Math.max(20, prev + (isSpike ? Math.random() * 40 - 15 : Math.random() * 6 - 3)))
       );
 
       setIncidents((prev) =>
-        Math.max(0, prev + Math.floor(Math.random() * 3 - 1))
+        Math.max(0, prev + (isSpike ? Math.floor(Math.random() * 4 - 1) : 0))
       );
 
       setConfidence((prev) =>
         Math.min(100, Math.max(85, prev + (Math.random() * 4 - 2)))
       );
-
-    }, 2000);
+    }, 1500);
 
     return () => clearInterval(interval);
-
   }, []);
 
   if (!mounted) return null;
 
   return (
-
-    <div className="min-h-screen bg-black text-white overflow-x-hidden selection:bg-cyan-500/30 relative font-sans">
-
-      {/* BACKGROUND */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-900/20 via-zinc-950 to-black" />
-
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
-
+    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden selection:bg-cyan-500/30 relative font-sans">
+      
+      {/* BACKGROUND - Clean, deep, and atmospheric */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex justify-center">
+        {/* Soft glowing orbs */}
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-cyan-900/10 blur-[150px] rounded-full mix-blend-screen" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-purple-900/10 blur-[150px] rounded-full mix-blend-screen" />
+        
+        {/* Crisp minimal grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_100%)] opacity-60" />
       </div>
 
-      {/* MAIN */}
-      <main className="relative z-10 p-4 md:p-6 lg:p-8 max-w-[1920px] mx-auto space-y-6">
-
+      {/* MAIN LAYOUT */}
+      <main className="relative z-10 p-4 md:p-8 lg:p-10 max-w-[2560px] mx-auto flex flex-col gap-8">
+        
         {/* HEADER */}
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-white/10">
-
-          <div className="space-y-1">
-
-            <div className="flex items-center gap-2">
-
-              <Activity className="text-cyan-400 w-8 h-8 animate-pulse" />
-
-              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500">
-
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-2">
+          <div className="space-y-2">
+            <div className="flex items-center gap-4">
+              <div className="p-2.5 bg-zinc-900/80 rounded-2xl border border-white/5 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+                <Activity className="text-cyan-400 w-8 h-8 animate-pulse" />
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-500">
                 Sentinel AI
-
               </h1>
-
             </div>
-
-            <p className="text-zinc-400 font-medium tracking-wide text-sm md:text-base uppercase">
-
+            <p className="text-zinc-500 font-semibold tracking-[0.2em] text-xs md:text-sm uppercase pl-[72px]">
               Autonomous Infrastructure Intelligence
-
             </p>
-
           </div>
 
-          {/* STATUS */}
-          <div className="bg-zinc-900/80 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.15)] backdrop-blur-xl px-5 py-2.5 rounded-full flex items-center gap-3 w-fit">
-
-            <div className="relative flex h-3 w-3">
-
+          {/* STATUS INDICATOR */}
+          <div className="bg-zinc-900/50 border border-cyan-500/20 backdrop-blur-2xl px-6 py-3 rounded-full flex items-center gap-4 shadow-lg w-fit">
+            <div className="relative flex h-3.5 w-3.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.8)]"></span>
             </div>
-
             <p className="text-cyan-400 font-bold tracking-widest text-xs uppercase">
-
               System Active
-
             </p>
-
           </div>
-
         </header>
 
-        {/* STATS */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
+        {/* KEY METRICS (4 Columns) */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            icon={<Cpu className="text-cyan-400" />}
+            icon={<Cpu className="text-cyan-400 w-7 h-7" />}
             label="Compute Load"
             value={`${Math.round(cpu)}%`}
-            colorClass="border-cyan-500/20 shadow-cyan-500/5"
+            accentColor="cyan"
           />
-
           <StatCard
-            icon={<ShieldAlert className="text-red-400" />}
+            icon={<ShieldAlert className="text-red-400 w-7 h-7 animate-pulse group-hover:animate-none" />}
             label="Threat Level"
             value="HIGH"
-            colorClass="border-red-500/20 shadow-red-500/5 text-red-400 animate-pulse"
+            accentColor="red"
           />
-
           <StatCard
-            icon={<Database className="text-purple-400" />}
+            icon={<Database className="text-purple-400 w-7 h-7" />}
             label="Active Incidents"
             value={incidents}
-            colorClass="border-purple-500/20 shadow-purple-500/5"
+            accentColor="purple"
           />
-
           <StatCard
-            icon={<Zap className="text-green-400" />}
+            icon={<Zap className="text-green-400 w-7 h-7" />}
             label="AI Confidence"
             value={`${Math.round(confidence)}%`}
-            colorClass="border-green-500/20 shadow-green-500/5 text-green-400"
+            accentColor="green"
           />
-
         </section>
 
-        {/* TOP GRID */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:h-[450px]">
-
-          <DashboardPanel title="Threat Feed">
-
-            <ThreatFeed />
-
-          </DashboardPanel>
-
-          <DashboardPanel title="Intelligence Core">
-
-            <IntelligenceCore />
-
-          </DashboardPanel>
-
-          <DashboardPanel title="Global Map">
-
-            <GlobalMap />
-
-          </DashboardPanel>
-
-        </section>
-
-        
-
-        {/* BOTTOM GRID */}
-        <section className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:min-h-[400px]">
-
-          <div className="lg:col-span-2">
-
-            <DashboardPanel title="AI Copilot">
-
-              <AICopilot />
-
+        {/* BENTO GRID MAIN SECTION (12 Columns) */}
+        <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          
+          {/* ROW 1: Hero Visuals */}
+          <div className="md:col-span-12 lg:col-span-8 h-[450px] lg:h-[550px]">
+            <DashboardPanel title="Global Threat Map" accentColor="cyan">
+              <GlobalMap />
             </DashboardPanel>
-
+          </div>
+          <div className="md:col-span-12 lg:col-span-4 h-[450px] lg:h-[550px]">
+            <DashboardPanel title="Live Threat Feed" accentColor="red">
+              <ThreatFeed />
+            </DashboardPanel>
           </div>
 
-          <div className="lg:col-span-1">
-
-            <DashboardPanel title="Telemetry">
-
+          {/* ROW 2: Analytics & AI */}
+          <div className="md:col-span-12 lg:col-span-6 h-[400px]">
+            <DashboardPanel title="Telemetry & Network Traffic" accentColor="purple">
               <TelemetryCharts />
-
             </DashboardPanel>
-
+          </div>
+          <div className="md:col-span-6 lg:col-span-3 h-[400px]">
+            <DashboardPanel title="AI Copilot Assist" accentColor="cyan">
+              <AICopilot />
+            </DashboardPanel>
+          </div>
+          <div className="md:col-span-6 lg:col-span-3 h-[400px]">
+            <DashboardPanel title="Intelligence Core" accentColor="blue">
+              <IntelligenceCore />
+            </DashboardPanel>
           </div>
 
-          <div className="lg:col-span-1 flex flex-col gap-4">
-
-            <div className="flex-1">
-
-              <DashboardPanel title="Prediction Engine">
-
-                <PredictionEngine />
-
-              </DashboardPanel>
-
-            </div>
-
-            <div className="flex-1">
-
-              <DashboardPanel title="Autonomous Actions">
-
-                <AutonomousActions />
-
-              </DashboardPanel>
-
-            </div>
-
+          {/* ROW 3: Logs & Actions */}
+          <div className="md:col-span-12 lg:col-span-5 h-[350px]">
+            <DashboardPanel title="System Activity Logs" accentColor="zinc">
+              <LiveLogs />
+            </DashboardPanel>
+          </div>
+          <div className="md:col-span-6 lg:col-span-4 h-[350px]">
+            <DashboardPanel title="Incident Timeline" accentColor="orange">
+              <IncidentTimeline />
+            </DashboardPanel>
+          </div>
+          <div className="md:col-span-6 lg:col-span-3 h-[350px]">
+            <DashboardPanel title="Autonomous Actions" accentColor="green">
+              <AutonomousActions />
+            </DashboardPanel>
           </div>
 
         </section>
-
-        {/* LOGS + TIMELINE */}
-
-<section className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[320px]">
-
-  {/* LOGS */}
-  <DashboardPanel title="Live Activity Logs">
-
-    <LiveLogs />
-
-  </DashboardPanel>
-
-  {/* TIMELINE */}
-  <DashboardPanel title="Incident Timeline">
-
-    <IncidentTimeline />
-
-  </DashboardPanel>
-
-</section>
-
       </main>
-
     </div>
-
   );
 }
 
-/* STAT CARD */
+/* =========================================
+   COMPONENTS
+========================================= */
 
 function StatCard({
   icon,
   label,
   value,
-  colorClass,
+  accentColor,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string | number;
-  colorClass: string;
+  accentColor: "cyan" | "red" | "purple" | "green";
 }) {
+  const hoverBorders = {
+    cyan: "hover:border-cyan-500/30",
+    red: "hover:border-red-500/30",
+    purple: "hover:border-purple-500/30",
+    green: "hover:border-green-500/30",
+  };
 
   return (
-
-    <div className={`bg-zinc-950/50 backdrop-blur-md border rounded-2xl p-5 flex flex-col justify-between transition-all hover:bg-zinc-900/60 shadow-lg ${colorClass}`}>
-
-      <div className="flex items-center gap-3 mb-4">
-
-        <div className="p-2 bg-white/5 rounded-lg">
-
+    <div className={`group bg-zinc-900/30 backdrop-blur-2xl border border-white/5 rounded-3xl p-6 flex flex-col justify-between transition-all duration-500 hover:-translate-y-1 overflow-hidden relative cursor-default shadow-xl ${hoverBorders[accentColor]}`}>
+      {/* Subtle background glow on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white-[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      
+      <div className="flex items-center gap-4 mb-6 relative z-10">
+        <div className="p-3 bg-zinc-950/50 rounded-2xl border border-white/5 shadow-inner transition-transform duration-500 group-hover:scale-110">
           {icon}
-
         </div>
-
-        <p className="text-zinc-400 font-medium text-sm uppercase tracking-wider">
-
+        <p className="text-zinc-500 font-bold text-xs md:text-sm uppercase tracking-[0.15em] group-hover:text-zinc-300 transition-colors duration-500">
           {label}
-
         </p>
-
       </div>
-
-      <p className="text-4xl font-black font-mono tracking-tight">
-
+      <p className="text-4xl md:text-5xl font-black font-mono tracking-tighter relative z-10 text-white drop-shadow-md">
         {value}
-
       </p>
-
     </div>
-
   );
 }
-
-/* PANEL */
 
 function DashboardPanel({
   title,
   children,
+  accentColor = "zinc",
 }: {
   title: string;
   children: React.ReactNode;
+  accentColor?: "cyan" | "red" | "purple" | "green" | "blue" | "orange" | "zinc";
 }) {
+  const dotColors = {
+    cyan: "bg-cyan-500",
+    red: "bg-red-500",
+    purple: "bg-purple-500",
+    green: "bg-green-500",
+    blue: "bg-blue-500",
+    orange: "bg-orange-500",
+    zinc: "bg-zinc-500",
+  };
 
   return (
-
-    <div className="bg-zinc-950/40 backdrop-blur-xl border border-white/10 rounded-2xl flex flex-col h-full overflow-hidden shadow-2xl hover:border-white/20 transition-colors">
-
-      <div className="px-4 py-3 border-b border-white/5 bg-white/5">
-
-        <h3 className="font-semibold text-sm tracking-wide text-zinc-300 uppercase">
-
-          {title}
-
-        </h3>
-
+    <div className="group bg-zinc-900/20 backdrop-blur-2xl border border-white/5 rounded-3xl flex flex-col h-full overflow-hidden shadow-2xl transition-all duration-500 hover:bg-zinc-900/40 hover:border-white/10 relative">
+      
+      {/* Top Header Bar inside Panel */}
+      <div className="px-6 py-4 border-b border-white/5 bg-zinc-950/40 flex justify-between items-center z-10">
+        <div className="flex items-center gap-3">
+          <div className={`w-2 h-2 rounded-full ${dotColors[accentColor]} shadow-[0_0_8px_currentColor] opacity-70 group-hover:opacity-100 transition-opacity`} />
+          <h3 className="font-bold text-xs tracking-[0.2em] text-zinc-400 uppercase group-hover:text-zinc-100 transition-colors duration-500">
+            {title}
+          </h3>
+        </div>
+        
+        {/* Decorative Terminal Dots */}
+        <div className="flex gap-1.5 opacity-20 group-hover:opacity-60 transition-opacity duration-500">
+          <div className="w-1.5 h-1.5 rounded-full bg-white" />
+          <div className="w-1.5 h-1.5 rounded-full bg-white" />
+          <div className="w-1.5 h-1.5 rounded-full bg-white" />
+        </div>
       </div>
 
-      <div className="p-4 flex-1 overflow-auto relative">
-
+      {/* Content Area */}
+      <div className="p-4 flex-1 overflow-y-auto overflow-x-hidden relative z-0 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
         {children}
-
       </div>
-
+      
     </div>
-
   );
 }
+
