@@ -32,6 +32,91 @@ export default function AICopilot() {
 
   }, [messages]);
 
+  function generateReply(message: string) {
+
+    const msg = message.toLowerCase();
+
+    // NORMAL CHAT
+
+    if (
+      msg.includes("hi") ||
+      msg.includes("hello") ||
+      msg.includes("hey")
+    ) {
+
+      return "Greetings, operator. Sentinel AI systems are fully operational.";
+
+    }
+
+    if (msg.includes("how are you")) {
+
+      return "All infrastructure nodes are stable. Operational efficiency currently at 96%.";
+
+    }
+
+    if (msg.includes("what can you do")) {
+
+      return "I monitor telemetry, analyze incidents, predict instability, and assist with autonomous operational intelligence.";
+
+    }
+
+    // INFRASTRUCTURE RESPONSES
+
+    if (
+      msg.includes("analyze") ||
+      msg.includes("infrastructure")
+    ) {
+
+      return "Infrastructure stability operating at 92%. Minor telemetry spikes detected across distributed nodes. Autonomous remediation active.";
+
+    }
+
+    if (
+      msg.includes("telemetry")
+    ) {
+
+      return "Telemetry streams indicate stable distributed system behavior with no critical degradation observed.";
+
+    }
+
+    if (
+      msg.includes("incident")
+    ) {
+
+      return "3 medium-severity anomalies detected. AI remediation workflows successfully stabilized affected operational nodes.";
+
+    }
+
+    if (
+      msg.includes("threat")
+    ) {
+
+      return "Threat severity remains moderate. Unauthorized access attempts were isolated and neutralized automatically.";
+
+    }
+
+    if (
+      msg.includes("prediction")
+    ) {
+
+      return "Predictive engine forecasts minor infrastructure instability within non-critical telemetry clusters.";
+
+    }
+
+    if (
+      msg.includes("logs")
+    ) {
+
+      return "Operational logs synchronized successfully. Real-time event tracking active across all infrastructure layers.";
+
+    }
+
+    // DEFAULT
+
+    return "Sentinel AI processed your request successfully. Infrastructure systems remain operational.";
+
+  }
+
   async function sendMessage() {
 
     if (!input.trim()) return;
@@ -54,25 +139,9 @@ export default function AICopilot() {
 
     setLoading(true);
 
-    try {
+    setTimeout(() => {
 
-      const response = await fetch("/api/analyze", {
-
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-
-          message: input,
-
-        }),
-
-      });
-
-      const data = await response.json();
+      const reply = generateReply(input);
 
       setMessages((prev: any) => [
 
@@ -82,34 +151,17 @@ export default function AICopilot() {
 
           role: "assistant",
 
-          content: data.reply,
+          content: reply,
 
         },
 
       ]);
 
-    } catch (error) {
+      setLoading(false);
 
-      setMessages((prev: any) => [
-
-        ...prev,
-
-        {
-
-          role: "assistant",
-
-          content:
-            "Sentinel AI failed to process infrastructure analysis.",
-
-        },
-
-      ]);
-
-    }
+    }, 1200);
 
     setInput("");
-
-    setLoading(false);
 
   }
 
@@ -132,8 +184,6 @@ export default function AICopilot() {
             }`}
           >
 
-            {/* LABEL */}
-
             <p className="text-xs uppercase tracking-[0.2em] mb-3 opacity-60 font-semibold">
 
               {msg.role === "assistant"
@@ -141,8 +191,6 @@ export default function AICopilot() {
                 : "Operator"}
 
             </p>
-
-            {/* MESSAGE */}
 
             <p className="text-sm leading-relaxed">
 
